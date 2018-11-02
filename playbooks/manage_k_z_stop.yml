@@ -1,0 +1,11 @@
+- hosts: kafka_servers
+  tasks:
+    - name: stop
+      shell: "systemctl stop kafka"
+
+- hosts: zk_servers
+  tasks:
+    - name: stop
+      shell: "systemctl stop zookeeper"
+
+

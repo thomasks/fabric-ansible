@@ -1,0 +1,175 @@
+################################################################################
+#
+#   ORGANIZATIONS
+#
+#   This section defines the organizational identities that can be referenced
+#   in the configuration profiles.
+#
+################################################################################
+Organizations:
+    - &Orderer-Org1
+        Name: orderer.freeexchange.cn 
+        ID: OrdererMSP
+        MSPDir: ../../output/freeexchange.cn/fabric-ca-files/freeexchange.cn/msp
+        Policies: &Orderer-Org1-Policies
+            Readers:
+                Type: Signature
+                Rule: "OR('OrdererMSP.member')"
+                #Rule: "OR('peers.member1.example.com.member','peers.member2.example.com.member')"
+            Writers:
+                Type: Signature
+                Rule: "OR('OrdererMSP.member')"
+                #Rule: "OR('peers.member1.example.com.admin','peers.member2.example.com.admin')"
+            Admins:
+                Type: Signature
+                Rule: "OR('OrdererMSP.admin')"
+                #Rule: "OR('peers.member1.example.com.admin','peers.member2.example.com.admin')"
+    - &Peer-Org1
+        Name: org1.freeexchange.cn
+        ID: Org1MSP
+        MSPDir: ../../output/freeexchange.cn/fabric-ca-files/org1.freeexchange.cn/msp
+        Policies: &Peer-Org1-Policies
+            Readers:
+                Type: Signature
+                Rule: "OR('Org1MSP.member')"
+            Writers:
+                Type: Signature
+                Rule: "OR('Org1MSP.admin','Org1MSP.client')"
+            Admins:
+                Type: Signature
+                Rule: "OR('Org1MSP.admin')"
+        AnchorPeers:
+            - Host: peer0.org1.freeexchange.cn
+              Port: 7051
+    - &Peer-Org2
+        Name: org2.freeexchange.cn
+        ID: Org2MSP
+        MSPDir: ../../output/freeexchange.cn/fabric-ca-files/org2.freeexchange.cn/msp
+        Policies: &Peer-Org2-Policies
+            Readers:
+                Type: Signature
+                Rule: "OR('Org2MSP.member')"
+            Writers:
+                Type: Signature
+                Rule: "OR('Org2MSP.admin','Org2MSP.client')"
+            Admins:
+                Type: Signature
+                Rule: "OR('Org2MSP.admin')"
+        AnchorPeers:
+            - Host: peer0.org2.freeexchange.cn
+              Port: 7051
+Capabilities:
+    Global: &ChannelCapabilities
+        V1_1: true
+    Orderer: &OrdererCapabilities
+        V1_1: true
+    Application: &ApplicationCapabilities
+        V1_2: true
+
+Application: &ApplicationDefaults
+    ACLs: &ACLsDefault
+        lscc/ChaincodeExists: /Channel/Application/Readers
+        lscc/GetDeploymentSpec: /Channel/Application/Readers
+        lscc/GetChaincodeData: /Channel/Application/Readers
+        lscc/GetInstantiatedChaincodes: /Channel/Application/Readers
+        qscc/GetChainInfo: /Channel/Application/Readers
+        qscc/GetBlockByNumber: /Channel/Application/Readers
+        qscc/GetBlockByHash: /Channel/Application/Readers
+        qscc/GetTransactionByID: /Channel/Application/Readers
+        qscc/GetBlockByTxID: /Channel/Application/Readers
+        cscc/GetConfigBlock: /Channel/Application/Readers
+        cscc/GetConfigTree: /Channel/Application/Readers
+        cscc/SimulateConfigTreeUpdate: /Channel/Application/Readers
+        peer/Propose: /Channel/Application/Writers
+        peer/ChaincodeToChaincode: /Channel/Application/Readers
+        event/Block: /Channel/Application/Readers
+        event/FilteredBlock: /Channel/Application/Readers
+    Organizations:
+    Policies: &ApplicationDefaultPolicies
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+    Capabilities:
+        <<: *ApplicationCapabilities
+
+Orderer: &OrdererDefaults
+    OrdererType: kafka
+    Addresses:
+        - orderer0.freeexchange.cn:7050
+        - orderer1.freeexchange.cn:7050
+        - orderer2.freeexchange.cn:7050
+    BatchTimeout: 2s
+    BatchSize:
+        MaxMessageCount: 10
+        AbsoluteMaxBytes: 99 MB
+        PreferredMaxBytes: 512 KB
+    MaxChannels: 0
+    Kafka:
+        Brokers:
+        Brokers:
+            - kafka0.freeexchange.cn:9092
+            - kafka1.freeexchange.cn:9092
+            - kafka2.freeexchange.cn:9092
+            - kafka3.freeexchange.cn:9092
+    Organizations:
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+        BlockValidation:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+    Capabilities:
+        <<: *OrdererCapabilities
+
+Channel: &ChannelDefaults
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+    Capabilities:
+        <<: *ChannelCapabilities
+
+Profiles:
+    OrdererGenesis:
+        <<: *ChannelDefaults
+        Capabilities:
+            <<: *ChannelCapabilities
+        Orderer:
+            <<: *OrdererDefaults
+            Organizations:
+                - *Orderer-Org1
+            Capabilities:
+                <<: *OrdererCapabilities
+        Consortiums:
+            SampleConsortium:
+                Organizations:
+                    - *Peer-Org1
+                    - *Peer-Org2
+    Channel:
+        Consortium: SampleConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                 - *Peer-Org1
+                 - *Peer-Org2
+            Capabilities:
+                <<: *ApplicationCapabilities

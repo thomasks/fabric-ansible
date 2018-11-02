@@ -1,0 +1,20 @@
+- hosts: kafka_servers
+  tasks:
+    - name: clean kafka data
+      shell: "rm -rf /data/kafka/*"
+
+- hosts: kafka_servers
+  tasks:
+    - name: clean kafka logs
+      shell: "rm -rf rm -rf  /data/logs/kafka/*"
+
+
+- hosts:  zk_servers
+  tasks:
+    - name: clean zk data
+      shell: "rm -rf /data/zookeeper/*"
+
+- hosts:  zk_servers
+  tasks:
+    - name: clean zk logs
+      shell: "rm -rf /data/logs/zookeeper/*"        

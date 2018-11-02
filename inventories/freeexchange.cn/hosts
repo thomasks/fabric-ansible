@@ -1,0 +1,28 @@
+[zk_servers]
+zk0.freeexchange.cn zk_id=1 ansible_host=118.25.52.158
+zk1.freeexchange.cn zk_id=2 ansible_host=111.231.144.55
+zk2.freeexchange.cn zk_id=3 ansible_host=118.25.59.108
+
+[kafka_servers]
+kafka0.freeexchange.cn kafka_broker_id=1 ansible_host=118.25.52.158 ansible_host_name=kafka0.freeexchange.cn
+kafka1.freeexchange.cn kafka_broker_id=2 ansible_host=111.231.144.55 ansible_host_name=kafka1.freeexchange.cn
+kafka2.freeexchange.cn kafka_broker_id=3 ansible_host=111.231.113.82 ansible_host_name=kafka2.freeexchange.cn
+kafka3.freeexchange.cn kafka_broker_id=4 ansible_host=118.25.59.108 ansible_host_name=kafka3.freeexchange.cn
+
+[orderer]
+orderer0.freeexchange.cn MSPID=OrdererMSP  ORG_DOMAIN=freeexchange.cn ansible_host=118.25.52.158 ca_shortname=orderer0 kafka_version=1.1.1
+orderer1.freeexchange.cn MSPID=OrdererMSP ORG_DOMAIN=freeexchange.cn ansible_host=111.231.144.55 ca_shortname=orderer1 kafka_version=1.1.1
+orderer2.freeexchange.cn MSPID=OrdererMSP ORG_DOMAIN=freeexchange.cn ansible_host=118.25.59.108 ca_shortname=orderer2 kafka_version=1.1.1
+
+[peer]
+peer0.org1.freeexchange.cn MSPID=Org1MSP ORG_DOMAIN=org1.freeexchange.cn ansible_host=118.25.52.158 STATE_DB=CouchDB COUCH_USER=admin COUCH_PASS=couchpwd ca_shortname=peer0 domain_name=peer0.org1.freeexchange.cn
+
+peer1.org1.freeexchange.cn MSPID=Org1MSP ORG_DOMAIN=org1.freeexchange.cn ansible_host=111.231.144.55 STATE_DB=CouchDB COUCH_USER=admin COUCH_PASS=couchpwd ca_shortname=peer1 domain_name=peer1.org1.freeexchange.cn
+
+peer0.org2.freeexchange.cn MSPID=Org2MSP ORG_DOMAIN=org2.freeexchange.cn ansible_host=118.25.59.108 STATE_DB=CouchDB COUCH_USER=admin COUCH_PASS=couchpwd ca_shortname=peer0 domain_name=peer0.org2.freeexchange.cn
+
+[machine]
+118.25.52.158
+111.231.144.55
+118.25.59.108
+111.231.113.82

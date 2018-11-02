@@ -1,0 +1,11 @@
+127.0.0.1 localhost.localdomain localhost
+127.0.0.1 localhost4.localdomain4 localhost4
+118.25.52.158 orderer.freeexchange.cn
+118.25.52.158 peer0.org1.freeexchange.cn
+111.231.144.55 peer1.org1.freeexchange.cn
+140.143.232.108 peer0.org2.freeexchange.cn
+118.25.59.108 peer0.org3.freeexchange.cn
+
+::1 localhost.localdomain localhost
+::1 localhost6.localdomain6 localhost6
+

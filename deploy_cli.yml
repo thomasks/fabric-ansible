@@ -1,0 +1,38 @@
+- hosts: peer0.org1.freeexchange.cn 
+  vars:
+     orderer_org: freeexchange.cn
+     orderer: orderer0.freeexchange.cn
+     orderer_ca: tlsca.freeexchange.cn-cert.pem
+     peer_org: org1.freeexchange.cn
+     peer: peer0.org1.freeexchange.cn
+     user_short_name: admin
+     mspid: Org1MSP
+     user: Admin
+  roles:
+    - cli
+
+- hosts: peer1.org1.freeexchange.cn
+  vars:
+     orderer_org: freeexchange.cn
+     orderer: orderer1.freeexchange.cn
+     orderer_ca: tlsca.freeexchange.cn-cert.pem
+     peer_org: org1.freeexchange.cn
+     peer: peer1.org1.freeexchange.cn
+     user_short_name: admin
+     mspid: Org1MSP 
+     user: Admin
+  roles:
+    - cli
+
+- hosts: peer0.org2.freeexchange.cn
+  vars:
+     orderer_org: freeexchange.cn
+     orderer: orderer2.freeexchange.cn
+     orderer_ca: tlsca.freeexchange.cn-cert.pem
+     peer_org: org2.freeexchange.cn
+     peer: peer0.org2.freeexchange.cn
+     user_short_name: admin
+     mspid: Org2MSP
+     user: Admin
+  roles:
+    - cli
